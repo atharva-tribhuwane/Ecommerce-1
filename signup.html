@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #heading {
+            text-align: center;
+            /* border: 1px solid red; */
+            margin: 1%;
+            color: goldenrod;
+        }
+
+        #container {
+            width: 30%;
+            margin: auto;
+            margin-top: 5%;
+        }
+
+        #container>form {
+            /* box-sizing: border-box; */
+            display: flex;
+            flex-direction: column;
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+            padding: 5%;
+
+
+        }
+
+        #container>form>input,
+        label {
+            margin: 1%;
+        }
+
+        #container>form>label {
+            color: goldenrod;
+        }
+
+        #container>form>input {
+            padding: 1%;
+            border-radius: 4px;
+            border: 1px solid grey;
+        }
+
+        #s-submit {
+            width: 30%;
+            background-color: goldenrod;
+            color: white;
+            font-weight: 700;
+            margin: auto;
+            /* border: 2px solid red; */
+        }
+        
+        #que{
+            text-align: center;
+            /* border: 1px solid red; */
+            margin-top: 2%;
+        }
+        #que>a{
+            color: goldenrod;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 id="heading">Signup</h1>
+    <div id="container">
+
+        <form id="signup">
+
+            <label for="s-email">Email:</label>
+            <input type="email" id="s-email" required />
+
+
+            <label for="s-phone">Phone No. </label>
+            <input type="tel" id="s-phone" required />
+
+
+            <label for="s-password">Set Password: </label>
+            <input type="password" id="s-password" required />
+
+            <input type="submit" id="s-submit" />
+
+        </form>
+    </div>
+    <div id="que">Already Have Account? <a href="./login.html" id="loginbutton">Login</a> Here</div>
+</body>
+<script>
+    // variable declaration section
+
+    let flag = 0;
+
+
+    // fetching localstorage and getting elements from dom section 
+
+    document.querySelector("#signup").addEventListener("submit", addUser);
+    let userdata = localStorage.getItem("userdata");
+    if (userdata == null) {
+        localStorage.setItem("userdata", JSON.stringify([]));
+    }
+
+    //functions
+
+    function addUser() {
+        event.preventDefault();
+        let email = document.getElementById("s-email").value;
+
+        let phone = document.getElementById("s-phone").value;
+
+        let password = document.getElementById("s-password").value;
+        userdata = JSON.parse(localStorage.getItem("userdata"));
+
+        userdata.forEach(function (user) {
+            if (user.email == email || user.phone == phone) {
+                alert("user already exists");
+
+                document.queryselector("#signup").reset();
+                flag = 1;
+            }
+        });
+
+        if (flag == 1) {
+            return;
+        }
+        else {
+            if (phone.length < 10) {
+                alert("Enter Valid Phone Number");
+                return;
+            }
+            else {
+
+                let user = {
+                    email: email,
+                    phone: phone,
+                    password: password
+                }
+                userdata.push(user);
+                localStorage.setItem("userdata", JSON.stringify(userdata));
+
+                window.location.href = "login.html";
+            }
+        }
+    }
+
+    // localStorage.clear();
+</script>
+
+</html>
